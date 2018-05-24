@@ -1,5 +1,5 @@
 /**
- * html2pdf.js v0.9.3
+ * html2pdf.js v0.9.4
  * Copyright (c) 2018 Erik Koopmans
  * Released under the MIT License.
  */
@@ -328,7 +328,10 @@ Worker.prototype.toPdf = function toPdf() {
       var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
       pageCtx.fillRect(0, 0, w, newPageHeight);
+      console.log('work.js 0', h, newPageHeight);
       pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);
+      console.log('work.js 1', page * pxPageHeight, currentOffset);
+      console.log('work.js 1.5', h, newPageHeight);
       currentOffset += newPageHeight;
 
       // Add the page to the PDF.
@@ -336,6 +339,7 @@ Worker.prototype.toPdf = function toPdf() {
         if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
+      console.log('work.js 2', pageHeight, newH);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, newH);
     }
   });

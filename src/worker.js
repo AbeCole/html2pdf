@@ -201,15 +201,18 @@ Worker.prototype.toPdf = function toPdf() {
       }
 
       // Display the page.
-			var newW = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[0] : pageCanvas.width;
-			var newH = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[1] : pageCanvas.height;
+      var newW = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[0] : pageCanvas.width;
+      var newH = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[1] : pageCanvas.height;
       var newRatio = newH / newW;
       var newPageHeight = Math.floor(canvas.width * newRatio);
       var w = pageCanvas.width;
       var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
       pageCtx.fillRect(0, 0, w, newPageHeight);
+      console.log('work.js 0', h, newPageHeight);
       pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);
+      console.log('work.js 1', page*pxPageHeight, currentOffset);
+      console.log('work.js 1.5', h, newPageHeight);
       currentOffset += newPageHeight;
 
       // Add the page to the PDF.
@@ -222,6 +225,7 @@ Worker.prototype.toPdf = function toPdf() {
         else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
+      console.log('work.js 2', pageHeight, newH);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0],
                         this.prop.pageSize.inner.width, newH);
     }
