@@ -327,7 +327,9 @@ Worker.prototype.toPdf = function toPdf() {
       pageCtx.drawImage(canvas, 0, page * pxPageHeight, w, h, 0, 0, w, h);
 
       // Add the page to the PDF.
-      if (page) this.prop.pdf.addPage();
+      if (page) {
+        if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.props.pdf.addPage();
+      }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, pageHeight);
     }
