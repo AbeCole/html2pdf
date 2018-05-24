@@ -223,7 +223,7 @@ Worker.prototype.toPdf = function toPdf() {
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0],
-                        this.prop.pageSize.inner.width, pageHeight);
+                        this.prop.pageSize.inner.width, newH);
     }
   });
 };

@@ -1,5 +1,5 @@
 /**
- * html2pdf.js v0.9.1
+ * html2pdf.js v0.9.3
  * Copyright (c) 2018 Erik Koopmans
  * Released under the MIT License.
  */
@@ -336,7 +336,7 @@ Worker.prototype.toPdf = function toPdf() {
         if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
-      this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, pageHeight);
+      this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, newH);
     }
   });
 };
