@@ -312,7 +312,7 @@ Worker.prototype.toPdf = function toPdf() {
 
     // Initialize the PDF.
     this.prop.pdf = this.prop.pdf || new jsPDF(opt.jsPDF);
-
+    var currentOffset = 0;
     for (var page = 0; page < nPages; page++) {
       // Trim the final page to reduce file size.
       if (page === nPages - 1) {
@@ -321,15 +321,19 @@ Worker.prototype.toPdf = function toPdf() {
       }
 
       // Display the page.
+      var newW = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[0] : pageCanvas.width;
+      var newH = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[1] : pageCanvas.height;
+      var newPageHeight = Math.floor(canvas.width * newRatio);
       var w = pageCanvas.width;
       var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
-      pageCtx.fillRect(0, 0, w, h);
-      pageCtx.drawImage(canvas, 0, page * pxPageHeight, w, h, 0, 0, w, h);
+      pageCtx.fillRect(0, 0, w, newPageHeight);
+      pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);
+      currentOffset += newPageHeight;
 
       // Add the page to the PDF.
       if (page) {
-        if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.props.pdf.addPage();
+        if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, pageHeight);
