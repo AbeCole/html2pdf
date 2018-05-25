@@ -189,7 +189,7 @@ Worker.prototype.toPdf = function toPdf() {
     var pageCtx = pageCanvas.getContext('2d');
     pageCanvas.width = canvas.width;
     pageCanvas.height = pxPageHeight;
-
+    console.log('work.js', canvas.toDataURL('image/' + opt.image.type, opt.image.quality));
     // Initialize the PDF.
     this.prop.pdf = this.prop.pdf || new jsPDF(opt.jsPDF);
     var currentOffset = 0;
@@ -225,7 +225,7 @@ Worker.prototype.toPdf = function toPdf() {
         else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
-      console.log('work.js 2', pageHeight, newH);
+      console.log('work.js 2', pageHeight, newH, imgData);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0],
                         this.prop.pageSize.inner.width, newH);
     }

@@ -1,5 +1,5 @@
 /**
- * html2pdf.js v0.9.4
+ * html2pdf.js v0.9.6
  * Copyright (c) 2018 Erik Koopmans
  * Released under the MIT License.
  */
@@ -8590,7 +8590,7 @@ Worker.prototype.toPdf = function toPdf() {
     var pageCtx = pageCanvas.getContext('2d');
     pageCanvas.width = canvas.width;
     pageCanvas.height = pxPageHeight;
-
+    console.log('work.js', canvas.toDataURL('image/' + opt.image.type, opt.image.quality));
     // Initialize the PDF.
     this.prop.pdf = this.prop.pdf || new jspdf_min(opt.jsPDF);
     var currentOffset = 0;
@@ -8621,7 +8621,7 @@ Worker.prototype.toPdf = function toPdf() {
         if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
-      console.log('work.js 2', pageHeight, newH);
+      console.log('work.js 2', pageHeight, newH, imgData);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, newH);
     }
   });
