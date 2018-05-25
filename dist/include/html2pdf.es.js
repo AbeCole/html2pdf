@@ -1,5 +1,5 @@
 /**
- * html2pdf.js v0.9.6
+ * html2pdf.js v0.9.7
  * Copyright (c) 2018 Erik Koopmans
  * Released under the MIT License.
  */
@@ -293,41 +293,38 @@ Worker.prototype.toPdf = function toPdf() {
     // Calculate the number of pages.
     var ctx = canvas.getContext('2d');
     var pxFullHeight = canvas.height;
-    var pxPageHeight = Math.floor(canvas.width * this.prop.pageSize.inner.ratio);
-    var nPages = Math.ceil(pxFullHeight / pxPageHeight);
 
     // Define pageHeight separately so it can be trimmed on the final page.
     var pageHeight = this.prop.pageSize.inner.height;
 
-    // Create a one-page canvas to split up the full image.
-    var pageCanvas = document.createElement('canvas');
-    var pageCtx = pageCanvas.getContext('2d');
-    pageCanvas.width = canvas.width;
-    pageCanvas.height = pxPageHeight;
-    console.log('work.js', canvas.toDataURL('image/' + opt.image.type, opt.image.quality));
     // Initialize the PDF.
     this.prop.pdf = this.prop.pdf || new jsPDF(opt.jsPDF);
     var currentOffset = 0;
-    for (var page = 0; page < nPages; page++) {
-      // Trim the final page to reduce file size.
-      if (page === nPages - 1) {
-        pageCanvas.height = pxFullHeight % pxPageHeight;
-        pageHeight = pageCanvas.height * this.prop.pageSize.inner.width / pageCanvas.width;
-      }
-
-      // Display the page.
+    for (var page = 0; page < opt.pageSizes.length; page++) {
       var newW = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[0] : pageCanvas.width;
       var newH = opt.pageSizes && opt.pageSizes[page] ? opt.pageSizes[page].size[1] : pageCanvas.height;
       var newRatio = newH / newW;
       var newPageHeight = Math.floor(canvas.width * newRatio);
+
+      // Create a one-page canvas to split up the full image.
+      var pageCanvas = document.createElement('canvas');
+      var pageCtx = pageCanvas.getContext('2d');
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = newPageHeight;
+      console.log('work.js 0', pxPageHeight, newPageHeight);
+
+      // Trim the final page to reduce file size.
+      if (page === opt.pageSizes.length - 1) {}
+      // pageCanvas.height = pxFullHeight % pxPageHeight;
+      // pageHeight = pageCanvas.height * this.prop.pageSize.inner.width / pageCanvas.width;
+
+
+      // Display the page.
       var w = pageCanvas.width;
       var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
       pageCtx.fillRect(0, 0, w, newPageHeight);
-      console.log('work.js 0', h, newPageHeight);
       pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);
-      console.log('work.js 1', page * pxPageHeight, currentOffset);
-      console.log('work.js 1.5', h, newPageHeight);
       currentOffset += newPageHeight;
 
       // Add the page to the PDF.
@@ -335,7 +332,7 @@ Worker.prototype.toPdf = function toPdf() {
         if (opt.pageSizes && opt.pageSizes[page]) this.prop.pdf.addPage(opt.pageSizes[page].size, opt.pageSizes[page].orientation);else this.prop.pdf.addPage();
       }
       var imgData = pageCanvas.toDataURL('image/' + opt.image.type, opt.image.quality);
-      console.log('work.js 2', pageHeight, newH, imgData);
+      console.log('work.js 2', imgData);
       this.prop.pdf.addImage(imgData, opt.image.type, opt.margin[1], opt.margin[0], this.prop.pageSize.inner.width, newH);
     }
   });
