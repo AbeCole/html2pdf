@@ -182,6 +182,8 @@ Worker.prototype.toPdf = function toPdf() {
     // Define pageHeight separately so it can be trimmed on the final page.
     var pageHeight = this.prop.pageSize.inner.height;
 
+    var pxPageHeight = Math.floor(canvas.width * this.prop.pageSize.inner.ratio);
+
     // Initialize the PDF.
     this.prop.pdf = this.prop.pdf || new jsPDF(opt.jsPDF);
     var currentOffset = 0;
@@ -200,7 +202,9 @@ Worker.prototype.toPdf = function toPdf() {
 
       // Trim the final page to reduce file size.
       if (page === opt.pageSizes.length-1) {
+        console.log('in if statement', pxFullHeight, pxPageHeight, pxFullHeight % pxPageHeight);
         // pageCanvas.height = pxFullHeight % pxPageHeight;
+        console.log('in if statement 2', this.prop.pageSize.inner.width, pageCanvas.width);
         // pageHeight = pageCanvas.height * this.prop.pageSize.inner.width / pageCanvas.width;
       }
 
