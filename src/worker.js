@@ -210,7 +210,6 @@ Worker.prototype.toPdf = function toPdf() {
 
       // Display the page.
       var w = pageCanvas.width;
-      var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
       pageCtx.fillRect(0, 0, w, newPageHeight);
       pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);

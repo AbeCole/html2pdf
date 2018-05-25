@@ -1,5 +1,5 @@
 /**
- * html2pdf.js v0.9.8
+ * html2pdf.js v0.9.9
  * Copyright (c) 2018 Erik Koopmans
  * Released under the MIT License.
  */
@@ -329,7 +329,6 @@ Worker.prototype.toPdf = function toPdf() {
 
       // Display the page.
       var w = pageCanvas.width;
-      var h = pageCanvas.height;
       pageCtx.fillStyle = 'white';
       pageCtx.fillRect(0, 0, w, newPageHeight);
       pageCtx.drawImage(canvas, 0, currentOffset, w, newPageHeight, 0, 0, w, newPageHeight);
